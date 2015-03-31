@@ -1,0 +1,4 @@
+box: ubuntu/trusty32
+# cpus: 'all', 'half' or integer
+cpus: half
+memory: 2048
