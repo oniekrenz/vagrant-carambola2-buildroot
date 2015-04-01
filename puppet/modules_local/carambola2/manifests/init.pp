@@ -9,12 +9,16 @@ class carambola2 {
     require  => [ Package['git'] ],
     source   => "${repository_url}",
     revision => 'master',
+    owner    => 'vagrant',
+    group    => 'vagrant',
   }
 
   file { 'aliases':
-    path => '/home/vagrant/.bash_aliases',
-    ensure => file,
+    path    => '/home/vagrant/.bash_aliases',
+    ensure  => file,
     content => template("carambola2/aliases.erb"),
+    owner   => 'vagrant',
+    group   => 'vagrant',
   }
 }
 
