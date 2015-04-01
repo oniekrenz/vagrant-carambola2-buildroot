@@ -4,23 +4,22 @@ config=YAML.load_file("config.yaml")
 box=config['box']
 memory=config['memory']
 cpus=config['cpus']
+cpucount=Facter.processorcount.to_i
 puppet_dir='puppet'
 
 case cpus
 when "all"
-  cpus=Facter.processorcount.to_i
+  cpus=cpucount
 when "half"
-  cpus=Facter.processorcount.to_i / 2
+  cpus=cpucount / 2
 else
   cpus=cpus.to_i
 end
-cpus=[[cpus.to_i, Facter.processorcount.to_i].min, 1].max
+cpus=[[cpus.to_i, cpucount].min, 1].max
 
 
 Vagrant.configure("2") do |config|
   config.vm.box = box
-#  config.vm.synced_folder "software", "/mnt/software"
-#  config.vm.synced_folder "projects", "/mnt/projects"
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--memory", memory]
@@ -30,7 +29,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.librarian_puppet.puppetfile_dir = puppet_dir + "/."
-  config.librarian_puppet.placeholder_filename = ".MYPLACEHOLDER"
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = puppet_dir + "/manifests"

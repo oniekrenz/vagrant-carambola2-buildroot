@@ -44,7 +44,7 @@ function checkVagrantBoxExists () {
 
 function checkVagrantPlugin () {
   local current_version=`$VAGRANT plugin list | sed -E "s/$1 +\(([0-9]+\.+[0-9]+\.[0-9]+)\).*$/\1/g p;d"`
-  test -z "$current_version" && exitWithMessage "Missing $VAGRANT plugin '$1'.\nTo install execute:\n $>sudo gem install $1\n $>$VAGRANT plugin install $1\nVisit $3"
+  test -z "$current_version" && exitWithMessage "Missing $VAGRANT plugin '$1'.\nTo install execute:\n $>$VAGRANT plugin install $1\nVisit $3"
   test `compareVersions $current_version "$2"` -lt 0 && exitWithMessage "vagrant plugin $1 $current_version is too old.\nAt least $2 is required."
 }
 
@@ -53,5 +53,8 @@ HOST_BOX=$(readYaml $CONFIG box)
 
 checkExecutable $VAGRANT $VAGRANT_VERSION_REQUIRED 'https://www.vagrantup.com/'
 checkVagrantBoxExists
-checkVagrantPlugin librarian-puppet 0.8.0 'http://librarian-puppet.com/'
-checkVagrantPlugin facter 1.6.0 'https://docs.puppetlabs.com/facter/'
+checkVagrantPlugin vagrant-librarian-puppet 0.8.0 'https://github.com/mhahn/vagrant-librarian-puppet'
+checkVagrantPlugin facter 1.7.0 'https://docs.puppetlabs.com/facter/'
+
+( cd puppet && librarian-puppet install )
+

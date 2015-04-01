@@ -1,8 +1,7 @@
 .vagrant
-.librarian
-.tmp
-puppet/modules/**/*
+puppet/.librarian/
+puppet/.tmp/
+puppet/modules/
 puppet/Puppetfile.lock
 
 **/.DS_Store
-
